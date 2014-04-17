@@ -1,8 +1,29 @@
 <div>
   <h3>Welcome to Contacts Application</h3>
-  <small>A sample test application to demonstrate <a href="http://vrest.optimizory.com">vREST</a> built with Backbone.js, Twitter Bootstrap, Node.js, Express, and MongoDB</small>
   <p>
-    This application works as a test application for <a href="http://vrest.optimizory.com">vREST</a>. We will use vREST to validate REST APIs of this application.
+    This application works as a test application to demonstrate <a href="http://vrest.optimizory.com">vREST</a>. We will use vREST to validate REST APIs of this application.
+
+    <h4>About this application</h4>
+    <p>
+        "Contacts" is a sample CRUD application built with Backbone.js, Twitter Bootstrap, Node.js, Express, and MongoDB. The application allows you to browse through a list of contacts, as well as add, update, and delete contacts. The application has the following schema with some validations:
+        <pre>
+            {
+                contact: {
+                    name: {type: String, required: true, maxLength: 35},
+                    email: {type: String},
+                    designation: {type: String, maxLength: 35},
+                    organization: {type: String, maxLength: 35},
+                    country: {type: String, maxLength: 35},
+                    aboutMe: {type: String},
+                    github: {type: String},
+                    facebook: {type: String},
+                    twitter: {type: String}
+                }
+            }
+        </pre>
+
+
+    </p>
 
     <h4>A small note on vREST</h4>
     <p>vREST is an online application developed by Optimizory to test the REST APIs of a web application under test.</p>

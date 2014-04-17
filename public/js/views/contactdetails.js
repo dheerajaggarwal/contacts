@@ -62,8 +62,11 @@ window.ContactView = Backbone.View.extend({
                 app.navigate('contacts/' + model.id, false);
                 utils.showAlert('Success!', 'contact saved successfully', 'alert-success');
             },
-            error: function () {
-                utils.showAlert('Error', 'An error occurred while trying to delete this item', 'alert-error');
+            error: function (result) {
+                var error = JSON.parse(arguments[1].responseText);
+                console.log(error);
+                utils.displayValidationErrors(error.errors || {});
+                utils.showAlert('Error', 'An error occurred while trying to save this item. Please see the errors above.', 'alert-error');
             }
         });
     },

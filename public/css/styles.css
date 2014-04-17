@@ -126,6 +126,24 @@ legend {
 
 .social-links {
     border-top: 2px solid rgb(97, 110, 180);
-    padding-top: 1em; 
-    margin-top: .5em;
+    padding-top: .5em; 
+    margin-top: 2.7em;
+    padding-bottom: .5em;
+    margin-bottom: .5em;
+    border-bottom: 2px solid rgb(97, 110, 180);
+}
+
+.organization-field {
+    font-size: 110%;
+    color: gray;
+    text-align: center;
+}
+
+.name-field {
+    font-size: 110%;
+    font-weight: bold;
+}
+
+.contact-card ul {
+    margin-bottom: 0;
 }

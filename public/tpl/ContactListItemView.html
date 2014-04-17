@@ -1,40 +1,38 @@
 <div class="ih-item square colored effect10 right_to_left">
-    <a href="#contacts/<%= _id %>">
-        <div class="front-view img">
-            <div class="name-field"><%= name %></div>
-            <div class="designation-field"><%= designation %></div>
-            <div class="email-field"><%= email %></div>
-            <div class="company-field"><%= company %></div>
-            <div class="country-field"><%= country %></div>
-            <div class="social-links">
-                <ul class="inline">
-                    <% if(github){ %>
-                        <li>
-                            <a class="btn" href="<%= github %>" target="_blank">
-                                <i class="fa fa-github fa-2x"></i>
-                            </a>
-                        </li>
-                    <% } %>
-                    <% if(facebook){ %>
-                        <li>
-                            <a class="btn" href="<%= facebook %>" target="_blank">
-                                <i class="fa fa-facebook fa-2x"></i>
-                            </a>
-                        </li>
-                    <% } %>
-                    <% if(twitter){ %>
-                        <li>
-                            <a class="btn" href="<%= twitter %>" target="_blank">
-                                <i class="fa fa-twitter fa-2x"></i>
-                            </a>
-                        </li>
-                    <% } %>
-                </ul>
-            </div>
+    <div class="front-view img">
+        <div class="name-field"><%= name %></div>
+        <div class="designation-field"><%= designation %></div>
+        <div class="email-field"><%= email %></div>
+        <div class="country-field"><%= country %></div>
+        <div class="social-links">
+            <ul class="inline">
+                <% if(github){ %>
+                    <li>
+                        <a class="btn social-link" href="<%= github %>" target="_blank">
+                            <i class="fa fa-github fa-2x"></i>
+                        </a>
+                    </li>
+                <% } %>
+                <% if(facebook){ %>
+                    <li>
+                        <a class="btn social-link" href="<%= facebook %>" target="_blank">
+                            <i class="fa fa-facebook fa-2x"></i>
+                        </a>
+                    </li>
+                <% } %>
+                <% if(twitter){ %>
+                    <li>
+                        <a class="btn social-link" href="<%= twitter %>" target="_blank">
+                            <i class="fa fa-twitter fa-2x"></i>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
         </div>
-        <div class="back-view info">
-            <h3><%= name %></h3>
-            <p><%= aboutMe %></p>
-        </div>
-    </a>
+        <div class="organization-field"><%= organization %></div>
+    </div>
+    <div class="back-view info">
+        <h3><%= name %></h3>
+        <p><%= aboutMe %></p>
+    </div>
 </div>

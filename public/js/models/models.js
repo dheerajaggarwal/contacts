@@ -40,7 +40,7 @@ window.Contact = Backbone.Model.extend({
         name: "",
         email: "",
         designation: "",
-        company: "",
+        organization: "",
         country: "",
         aboutMe: "",
         twitter: "",

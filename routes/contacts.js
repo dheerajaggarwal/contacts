@@ -1,4 +1,5 @@
-var mongo = require('mongodb');
+var mongo = require('mongodb'),
+    _ = require('underscore');
 
 var Server = mongo.Server,
     Db = mongo.Db,
@@ -23,7 +24,7 @@ exports.findById = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving contact: ' + id);
     db.collection('contacts', function(err, collection) {
-        collection.findOne({'_id':new BSON.ObjectID(id)}, function(err, item) {
+        collection.findOne({'_id': new BSON.ObjectID(id)}, function(err, item) {
             res.send(item);
         });
     });
@@ -37,18 +38,49 @@ exports.findAll = function(req, res) {
     });
 };
 
+var isValidContact = function(contact){
+    var errors = {}, lengthLimit = 35, 
+        i, count, field;
+
+    var requiredFields = ['name'],
+        limitedLengthFields = ['name', 'designation', 'country', 'organization'];
+    
+    for(i = 0, count = requiredFields.length; i < count; i++){
+        if(!contact[requiredFields[i]]){
+            errors[requiredFields[i]] = "required field";
+        }
+    }
+
+    for(i = 0, count = limitedLengthFields.length; i < count; i++){
+        field = limitedLengthFields[i];
+        if(!errors[field] && contact[field] && contact[field].length > lengthLimit){
+            errors[field] = "field length cannot be greater than " + lengthLimit;
+        }
+    }
+
+    if(_.isEmpty(errors)){
+        return true;
+    }
+    return errors;
+};
+
 exports.addcontact = function(req, res) {
     var contact = req.body;
     console.log('Adding contact: ' + JSON.stringify(contact));
     db.collection('contacts', function(err, collection) {
-        collection.insert(contact, {safe:true}, function(err, result) {
-            if (err) {
-                res.send({'error':'An error has occurred'});
-            } else {
-                console.log('Success: ' + JSON.stringify(result[0]));
-                res.send(result[0]);
-            }
-        });
+        var isValid = isValidContact(contact);
+        if(isValid === true){
+            collection.insert(contact, {safe:true}, function(err, result) {
+                if (err) {
+                    res.send(400, {'error':'An error has occurred'});
+                } else {
+                    console.log('Success: ' + JSON.stringify(result[0]));
+                    res.send(result[0]);
+                }
+            });
+        } else {
+            res.send(400, {errors: isValid});
+        }
     });
 }
 
@@ -59,15 +91,20 @@ exports.updatecontact = function(req, res) {
     console.log('Updating contact: ' + id);
     console.log(JSON.stringify(contact));
     db.collection('contacts', function(err, collection) {
-        collection.update({'_id':new BSON.ObjectID(id)}, contact, {safe:true}, function(err, result) {
-            if (err) {
-                console.log('Error updating contact: ' + err);
-                res.send({'error':'An error has occurred'});
-            } else {
-                console.log('' + result + ' document(s) updated');
-                res.send(contact);
-            }
-        });
+        var isValid = isValidContact(contact);
+        if(isValid === true){
+            collection.update({'_id': new BSON.ObjectID(id)}, contact, {safe:true}, function(err, result) {
+                if (err) {
+                    console.log('Error updating contact: ' + err);
+                    res.send(400, {'error': 'An error has occurred'});
+                } else {
+                    console.log('' + result + ' document(s) updated');
+                    res.send(contact);
+                }
+            });    
+        } else {
+            res.send(400, {errors: isValid});
+        }
     });
 }
 
@@ -75,9 +112,9 @@ exports.deletecontact = function(req, res) {
     var id = req.params.id;
     console.log('Deleting contact: ' + id);
     db.collection('contacts', function(err, collection) {
-        collection.remove({'_id':new BSON.ObjectID(id)}, {safe:true}, function(err, result) {
+        collection.remove({'_id': new BSON.ObjectID(id)}, {safe:true}, function(err, result) {
             if (err) {
-                res.send({'error':'An error has occurred - ' + err});
+                res.send(400, {'error': 'An error has occurred - ' + err});
             } else {
                 console.log('' + result + ' document(s) deleted');
                 res.send(req.body);
