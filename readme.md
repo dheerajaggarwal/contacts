@@ -1,6 +1,6 @@
-# Node Cellar Sample Application with Backbone.js, Twitter Bootstrap, Node.js, Express, and MongoDB #
+# Contacts Sample Test Application to demonstrate [vREST](http://vrest.optimizory.com/i/contacts) #
 
-"Node Cellar" is a sample CRUD application built with with Backbone.js, Twitter Bootstrap, Node.js, Express, and MongoDB.
+"Contacts" is a sample CRUD application built with with Backbone.js, Twitter Bootstrap, Node.js, Express, and MongoDB.
 
 The application allows you to browse through a list of contacts, as well as add, update, and delete contacts.
 
