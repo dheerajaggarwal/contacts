@@ -20,20 +20,44 @@ db.open(function(err, db) {
     }
 });
 
+exports.rePopulateDB = function(req, res){
+    db.dropDatabase(function(err, done) {
+        if(!err){
+            populateDB(function(err, result){
+                if (err) {
+                    res.send(400, {'error':'An error has occurred'});
+                } else {
+                    res.json(result);
+                }
+            });
+        } else {
+            res.send(400, {'error':'An error has occurred'});
+        }
+    });
+};
+
 exports.findById = function(req, res) {
     var id = req.params.id;
     console.log('Retrieving contact: ' + id);
     db.collection('contacts', function(err, collection) {
         collection.findOne({'_id': new BSON.ObjectID(id)}, function(err, item) {
-            res.send(item);
+            if (err) {
+                res.send(400, {'error':'An error has occurred'});
+            } else {
+                if(item){
+                    res.json(item);    
+                } else {
+                    res.send(400, {'error':'Item not found.'});
+                }
+            }
         });
     });
 };
 
 exports.findAll = function(req, res) {
     db.collection('contacts', function(err, collection) {
-        collection.find().toArray(function(err, items) {
-            res.send(items);
+        collection.find().sort('createdOn').toArray(function(err, items) {
+            res.json(items);
         });
     });
 };
@@ -66,6 +90,7 @@ var isValidContact = function(contact){
 
 exports.addcontact = function(req, res) {
     var contact = req.body;
+    contact.createdOn = new Date();
     console.log('Adding contact: ' + JSON.stringify(contact));
     db.collection('contacts', function(err, collection) {
         var isValid = isValidContact(contact);
@@ -126,7 +151,7 @@ exports.deletecontact = function(req, res) {
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the application is started.
 // You'd typically not find this code in a real-life app, since the database would already exist.
-var populateDB = function() {
+var populateDB = function(next) {
 
     var contacts = [
     {
@@ -138,7 +163,8 @@ var populateDB = function() {
         aboutMe: "About me Section ...",
         github: "https://github.com/dheerajaggarwal",
         facebook: "https://www.facebook.com/dheeraj.aggarwal",
-        twitter: "https://www.twitter.com/dheeraj.aggarwal"
+        twitter: "https://www.twitter.com/dheeraj.aggarwal",
+        createdOn: new Date()
     },
     {
         name: "Ramesh Kumar",
@@ -149,7 +175,8 @@ var populateDB = function() {
         aboutMe: "About me Section ...",
         github: "https://github.com/dheerajaggarwal",
         facebook: "https://www.facebook.com/dheeraj.aggarwal",
-        twitter: "https://www.twitter.com/dheeraj.aggarwal"
+        twitter: "https://www.twitter.com/dheeraj.aggarwal",
+        createdOn: new Date()
     },
     {
         name: "Deepanshu Natani",
@@ -160,7 +187,8 @@ var populateDB = function() {
         aboutMe: "About me Section ...",
         github: "https://github.com/dheerajaggarwal",
         facebook: "https://www.facebook.com/dheeraj.aggarwal",
-        twitter: "https://www.twitter.com/dheeraj.aggarwal"
+        twitter: "https://www.twitter.com/dheeraj.aggarwal",
+        createdOn: new Date()
     },
     {
         name: "Deepak Jangid",
@@ -171,11 +199,16 @@ var populateDB = function() {
         aboutMe: "About me Section ...",
         github: "https://github.com/dheerajaggarwal",
         facebook: "https://www.facebook.com/dheeraj.aggarwal",
-        twitter: "https://www.twitter.com/dheeraj.aggarwal"
+        twitter: "https://www.twitter.com/dheeraj.aggarwal",
+        createdOn: new Date()
     }];
 
     db.collection('contacts', function(err, collection) {
-        collection.insert(contacts, {safe:true}, function(err, result) {});
+        collection.insert(contacts, {safe:true}, function(err, result) {
+            if(next){
+                next(err, result);
+            }
+        });
     });
 
 };

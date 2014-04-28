@@ -12,6 +12,7 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
+app.post('/contacts/rePopulateDB', contact.rePopulateDB);
 app.get('/contacts', contact.findAll);
 app.get('/contacts/:id', contact.findById);
 app.post('/contacts', contact.addcontact);
