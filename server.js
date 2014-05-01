@@ -22,10 +22,11 @@ app.configure(function () {
 });
 
 var requiresLogin = function(req, res, next) {
-    var redirectURL = '/signin';
+    next();
+    /*var redirectURL = '/signin';
     if (!req.isAuthenticated()) {
     	return res.redirect(redirectURL);
-    } else next();
+    } else next();*/
 };
 
 app.post('/contacts/rePopulateDB', requiresLogin, contact.rePopulateDB);
@@ -36,7 +37,8 @@ app.put('/contacts/:id', requiresLogin, contact.updatecontact);
 app.delete('/contacts/:id', requiresLogin, contact.deletecontact);
 
 
-app.get('/signin', home.signin);
+app.get('/signin', home.getSignIn);
+app.post('/signin', home.postSignIn);
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
