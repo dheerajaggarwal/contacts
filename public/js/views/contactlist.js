@@ -53,9 +53,14 @@ window.ContactListItemView = Backbone.View.extend({
 
     onCardClick: function(event){
         var target = $(event.target);
-        if(!target.hasClass("social-link")){
+        if(target.hasClass("social-link")){
+            return false;
+        } else if(target.hasClass('switcher')){
+            var cardEl = target.closest('.ih-item');
+            cardEl.toggleClass('hover');
+            return false;
+        } else {
             app.navigate('contacts/' + this.model.id, true);
         }
-        return false;
     }
 });

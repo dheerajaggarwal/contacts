@@ -127,7 +127,7 @@ legend {
 .social-links {
     border-top: 2px solid rgb(97, 110, 180);
     padding-top: .5em; 
-    margin-top: 2.7em;
+    margin-top: 2em;
     padding-bottom: .5em;
     margin-bottom: .5em;
     border-bottom: 2px solid rgb(97, 110, 180);
@@ -146,4 +146,88 @@ legend {
 
 .contact-card ul {
     margin-bottom: 0;
+}
+
+.switcher {
+    width:1em;
+    height:1em;
+    border:1px solid gray;
+    margin-top: 5px;
+}
+
+.front-view .switcher {
+    background-color: #1a4a72;
+}
+
+.back-view .switcher {
+    background-color: #fff;
+}
+
+.ih-item {
+    cursor: pointer;
+}
+
+.back-view {
+    color: #fff;
+}
+
+.ih-item.square.effect10.right_to_left.hover .img {
+    -webkit-transform: translateX(-100%) !important;
+    -moz-transform: translateX(-100%) !important;
+    -ms-transform: translateX(-100%) !important;
+    -o-transform: translateX(-100%) !important;
+    transform: translateX(-100%) !important;
+}
+
+.ih-item.square.effect10.right_to_left:hover .img {
+    -webkit-transform: translateX(0%) !important;
+    -moz-transform: translateX(0%) !important;
+    -ms-transform: translateX(0%) !important;
+    -o-transform: translateX(0%) !important;
+    transform: translateX(0%) !important;
+}
+
+.ih-item.square.effect10.right_to_left.hover .information {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+}
+
+.ih-item.square.effect10.hover .information {
+    visibility: visible;
+    opacity: 1;
+}
+
+.ih-item.square.effect10.colored .information {
+    background: #1a4a72;
+}
+
+.ih-item.square.effect10 .information {
+    background: #333333;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+
+.ih-item.square.effect10.right_to_left .information {
+    -webkit-transform: translateX(100%);
+    -moz-transform: translateX(100%);
+    -ms-transform: translateX(100%);
+    -o-transform: translateX(100%);
+    transform: translateX(100%);
+}
+
+.ih-item.square .information {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
