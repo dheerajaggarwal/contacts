@@ -43,9 +43,9 @@ window.Contact = Backbone.Model.extend({
         organization: "",
         country: "",
         aboutMe: "",
-        twitter: "",
-        facebook: "",
-        github: ""
+        twitterId: "",
+        facebookId: "",
+        githubId: ""
     }
 });
 
