@@ -4,7 +4,7 @@ window.ContactView = Backbone.View.extend({
         "click .save"   : "beforeSave",
         "click .delete" : "deletecontact",
         "drop #picture" : "dropHandler",
-        'keyup :input': 'onKeyUp'
+        'keyup :input'  : 'onKeyUp'
     },
 
     initialize: function () {

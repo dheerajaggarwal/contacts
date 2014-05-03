@@ -1,12 +1,12 @@
 var AppRouter = Backbone.Router.extend({
 
     routes: {
-        ""                  : "home",
-        "contacts"	: "list",
+        ""                      : "home",
+        "contacts"	            : "list",
         "contacts/page/:page"	: "list",
-        "contacts/add"         : "addcontact",
-        "contacts/:id"         : "contactDetails",
-        "about"             : "about"
+        "contacts/add"          : "addcontact",
+        "contacts/:id"          : "contactDetails",
+        "about"                 : "about"
     },
 
     initialize: function () {
@@ -52,7 +52,6 @@ var AppRouter = Backbone.Router.extend({
         $('#content').html(this.aboutView.el);
         this.headerView.selectMenuItem('about-menu');
     }
-
 });
 
 utils.loadTemplate(['HomeView', 'HeaderView', 'ContactView', 'ContactListItemView', 'AboutView'], function() {

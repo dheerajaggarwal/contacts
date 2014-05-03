@@ -14,23 +14,23 @@
         <div class="country-field"><%= country %></div>
         <div class="social-links">
             <ul class="inline">
-                <% if(github){ %>
+                <% if(githubId){ %>
                     <li>
-                        <a class="btn social-link" href="<%= github %>" target="_blank">
+                        <a class="btn social-link" href="<%= githubId %>" target="_blank">
                             <i class="fa fa-github fa-2x"></i>
                         </a>
                     </li>
                 <% } %>
-                <% if(facebook){ %>
+                <% if(facebookId){ %>
                     <li>
-                        <a class="btn social-link" href="<%= facebook %>" target="_blank">
+                        <a class="btn social-link" href="<%= facebookId %>" target="_blank">
                             <i class="fa fa-facebook fa-2x"></i>
                         </a>
                     </li>
                 <% } %>
-                <% if(twitter){ %>
+                <% if(twitterId){ %>
                     <li>
-                        <a class="btn social-link" href="<%= twitter %>" target="_blank">
+                        <a class="btn social-link" href="<%= twitterId %>" target="_blank">
                             <i class="fa fa-twitter fa-2x"></i>
                         </a>
                     </li>
@@ -42,7 +42,7 @@
     <div class="back-view information">
         <div class="row" style="margin-left:0;">
             <div class="span11">
-                <h3><%= name %></h3>
+                <h4><%= name %></h4>
             </div>
             <div class="span1">
                 <div class="switcher">

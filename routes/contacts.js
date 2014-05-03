@@ -161,9 +161,9 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "About me Section ...",
-        github: "https://github.com/dheerajaggarwal",
-        facebook: "https://www.facebook.com/dheeraj.aggarwal",
-        twitter: "https://www.twitter.com/dheeraj.aggarwal",
+        githubId: "https://github.com/dheerajaggarwal",
+        facebookId: "https://www.facebook.com/dheeraj.aggarwal",
+        twitterId: "https://www.twitter.com/dheeraj.aggarwal",
         createdOn: new Date()
     },
     {
@@ -173,9 +173,9 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "About me Section ...",
-        github: "https://github.com/dheerajaggarwal",
-        facebook: "https://www.facebook.com/dheeraj.aggarwal",
-        twitter: "https://www.twitter.com/dheeraj.aggarwal",
+        githubId: "https://github.com/dheerajaggarwal",
+        facebookId: "https://www.facebook.com/dheeraj.aggarwal",
+        twitterId: "https://www.twitter.com/dheeraj.aggarwal",
         createdOn: new Date()
     },
     {
@@ -185,9 +185,9 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "About me Section ...",
-        github: "https://github.com/dheerajaggarwal",
-        facebook: "https://www.facebook.com/dheeraj.aggarwal",
-        twitter: "https://www.twitter.com/dheeraj.aggarwal",
+        githubId: "https://github.com/dheerajaggarwal",
+        facebookId: "https://www.facebook.com/dheeraj.aggarwal",
+        twitterId: "https://www.twitter.com/dheeraj.aggarwal",
         createdOn: new Date()
     },
     {
@@ -197,9 +197,9 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "About me Section ...",
-        github: "https://github.com/dheerajaggarwal",
-        facebook: "https://www.facebook.com/dheeraj.aggarwal",
-        twitter: "https://www.twitter.com/dheeraj.aggarwal",
+        githubId: "https://github.com/dheerajaggarwal",
+        facebookId: "https://www.facebook.com/dheeraj.aggarwal",
+        twitterId: "https://www.twitter.com/dheeraj.aggarwal",
         createdOn: new Date()
     }];
 
