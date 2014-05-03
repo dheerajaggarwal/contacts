@@ -62,6 +62,10 @@ exports.findAll = function(req, res) {
     });
 };
 
+var isValidEmail = function(e){
+    return String(e).match(/^\s*[\w\-\+_]+(?:\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(?:\.[\w‌​\-\+_]+)*\s*$/);
+};
+
 var isValidContact = function(contact){
     var errors = {}, lengthLimit = 35, 
         i, count, field;
@@ -81,6 +85,18 @@ var isValidContact = function(contact){
             errors[field] = "field length cannot be greater than " + lengthLimit;
         }
     }
+
+    /* version 2 code starts here */
+    if(contact.email){
+        if(!isValidEmail(contact.email)){
+            errors['email'] = "Email Id is not valid.";
+        }
+    }
+
+    if(contact.aboutMe && contact.aboutMe.length > 500){
+        errors['aboutMe'] = 'field length cannot be greater than ' + 500;
+    }
+    /* version 2 code ends here */
 
     if(_.isEmpty(errors)){
         return true;
