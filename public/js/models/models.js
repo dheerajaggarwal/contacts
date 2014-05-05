@@ -1,6 +1,8 @@
+var baseURL = '/apps/contacts/v1';
+
 window.Contact = Backbone.Model.extend({
 
-    urlRoot: "/contacts",
+    urlRoot: baseURL + "/contacts",
 
     idAttribute: "_id",
 
@@ -53,6 +55,6 @@ window.ContactCollection = Backbone.Collection.extend({
 
     model: Contact,
 
-    url: "/contacts"
+    url: baseURL + "/contacts"
 
 });
