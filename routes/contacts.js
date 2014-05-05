@@ -163,7 +163,7 @@ var populateDB = function(next) {
         aboutMe: "Passionate to learn and innovate new ideas and do every piece of work with a degree of excellence and try best to bring ideas into life.",
         githubId: "dheerajaggarwal",
         facebookId: "dheeraj.aggarwal",
-        twitterId: "dheeraj.aggarwal",
+        twitterId: "dheerajaggarwal",
         createdOn: new Date()
     },
     {
@@ -173,9 +173,9 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "About me Section ...",
-        githubId: "dheerajaggarwal",
-        facebookId: "dheeraj.aggarwal",
-        twitterId: "dheeraj.aggarwal",
+        githubId: "",
+        facebookId: "goods.ramesh",
+        twitterId: "",
         createdOn: new Date()
     },
     {
@@ -185,9 +185,9 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "About me Section ...",
-        githubId: "dheerajaggarwal",
-        facebookId: "dheeraj.aggarwal",
-        twitterId: "dheeraj.aggarwal",
+        githubId: "",
+        facebookId: "deepanshu.natani",
+        twitterId: "deepanshunatani",
         createdOn: new Date()
     },
     {
@@ -197,9 +197,9 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "About me Section ...",
-        githubId: "dheerajaggarwal",
-        facebookId: "dheeraj.aggarwal",
-        twitterId: "dheeraj.aggarwal",
+        githubId: "",
+        facebookId: "",
+        twitterId: "",
         createdOn: new Date()
     }];
 
