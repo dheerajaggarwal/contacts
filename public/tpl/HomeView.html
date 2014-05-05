@@ -10,11 +10,11 @@
             {
                 contact: {
                     name: {type: String, required: true, maxLength: 35},
-                    email: {type: String},
+                    email: {type: String, validator: emailValidator},
                     designation: {type: String, maxLength: 35},
                     organization: {type: String, maxLength: 35},
                     country: {type: String, maxLength: 35},
-                    aboutMe: {type: String},
+                    aboutMe: {type: String, maxLength: 500},
                     githubId: {type: String},
                     facebookId: {type: String},
                     twitterId: {type: String}
