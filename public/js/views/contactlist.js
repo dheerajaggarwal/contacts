@@ -35,7 +35,10 @@ window.ContactListItemView = Backbone.View.extend({
     },
 
     render: function () {
-        var obj = this.model.toJSON();
+        var obj = this.model.toJSON(),
+            githubBaseURL = 'https://github.com/',
+            facebookBaseURL = 'https://facebook.com/',
+            twitterBaseURL = 'https://twitter.com/';
         if(!obj._id){ //if new card
             if(!obj.name) obj.name = 'Your Name';
             if(!obj.aboutMe) obj.aboutMe = 'About me section';
@@ -43,9 +46,9 @@ window.ContactListItemView = Backbone.View.extend({
             if(!obj.designation) obj.designation = 'Designation';
             if(!obj.organization) obj.organization = 'Organization Name';
             if(!obj.country) obj.country = 'Country Name';
-            if(!obj.githubId) obj.githubId = 'https://github.com/';
-            if(!obj.facebookId) obj.facebookId = 'https://facebook.com';
-            if(!obj.twitterId) obj.twitterId = 'https://twitter.com';
+            if(!obj.githubId) obj.githubId = ' ';
+            if(!obj.facebookId) obj.facebookId = ' ';
+            if(!obj.twitterId) obj.twitterId = ' ';
         }
         this.$el.html(this.template(obj));
         return this;
