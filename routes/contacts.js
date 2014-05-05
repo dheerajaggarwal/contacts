@@ -213,9 +213,9 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "About me Section ...",
-        githubId: "dheerajaggarwal",
-        facebookId: "dheeraj.aggarwal",
-        twitterId: "dheeraj.aggarwal",
+        githubId: "",
+        facebookId: "",
+        twitterId: "",
         createdOn: new Date()
     }];
 
