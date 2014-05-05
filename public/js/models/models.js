@@ -1,4 +1,4 @@
-var baseURL = '/apps/contacts/v1';
+var baseURL = '/apps/contacts/v2';
 
 window.Contact = Backbone.Model.extend({
 
