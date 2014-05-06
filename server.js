@@ -4,10 +4,17 @@ var express = require('express'),
     contact = require('./routes/contacts'),
     home = require('./routes/home');
 
-var app = express();
+var app = express(),
+    baseURL = process.env.baseURL || '/',
+    instanceType = 'Test';
+
+if(baseURL.indexOf('prod') !== -1){
+    instanceType = 'Production';
+}
 
 app.locals = {
-    baseURL: process.env.baseURL || '/'
+    baseURL: process.env.baseURL || '/',
+    instanceType: instanceType
 };
 
 app.configure(function () {
