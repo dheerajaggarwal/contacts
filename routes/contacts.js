@@ -6,11 +6,12 @@ var Server = mongo.Server,
     BSON = mongo.BSONPure;
 
 var server = new Server('localhost', 27017, {auto_reconnect: true});
-db = new Db('contactdb', server, {safe: true});
+var dbName = process.env.DB || 'contactdb';
+db = new Db(dbName, server, {safe: true});
 
 db.open(function(err, db) {
     if(!err) {
-        console.log("Connected to 'contactdb' database");
+        console.log("Connected to '"+dbName+"' database");
         db.collection('contacts', {safe:true}, function(err, collection) {
             if (err) {
                 console.log("The 'contacts' collection doesn't exist. Creating it with sample data...");
@@ -25,7 +26,7 @@ exports.rePopulateDB = function(req, res){
         if(!err){
             populateDB(function(err, result){
                 if (err) {
-                    res.send(400, {'error':'An error has occurred'});
+                    res.send(400, {'error': 'An error has occurred'});
                 } else {
                     res.json(result);
                 }
