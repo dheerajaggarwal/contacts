@@ -1,4 +1,4 @@
-# Contacts Sample Test Application to demonstrate [vREST](http://vrest.optimizory.com/i/contacts) #
+# Contacts Sample Test Application to demonstrate [vREST](http://vrest.io/i/demo/VC) #
 
 "Contacts" is a sample CRUD application built with with Backbone.js, Twitter Bootstrap, Node.js, Express, and MongoDB.
 
