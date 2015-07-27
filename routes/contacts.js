@@ -48,7 +48,7 @@ exports.findById = function(req, res) {
                 if(item){
                     res.json(item);    
                 } else {
-                    res.send(400, {'error':'Item not found.'});
+                    res.send(400, {'error':'Contact with id "' + id + '" not found.'});
                 }
             }
         });
@@ -124,8 +124,12 @@ exports.updatecontact = function(req, res) {
                     console.log('Error updating contact: ' + err);
                     res.send(400, {'error': 'An error has occurred'});
                 } else {
-                    console.log('' + result + ' document(s) updated');
-                    res.send(contact);
+                    if(result){
+                        console.log('' + result + ' document(s) updated');
+                        res.send(contact);    
+                    } else {
+                        res.send(400, {'error': 'Contact with id "' + id + '" not found.'});
+                    }
                 }
             });    
         } else {
@@ -142,8 +146,12 @@ exports.deletecontact = function(req, res) {
             if (err) {
                 res.send(400, {'error': 'An error has occurred - ' + err});
             } else {
-                console.log('' + result + ' document(s) deleted');
-                res.send(req.body);
+                if(result){
+                    console.log('' + result + ' document(s) deleted');
+                    res.send(req.body);
+                } else {
+                    res.send(400, {'error': 'Contact with id "' + id + '" not found.'});
+                }
             }
         });
     });
