@@ -170,6 +170,7 @@ var populateDB = function(next) {
         organization: "Optimizory Technologies Pvt. Ltd.",
         country: "India",
         aboutMe: "Passionate to learn and innovate new ideas and do every piece of work with a degree of excellence and try best to bring ideas into life.",
+        linkedInId: "aggarwaldheeraj",
         githubId: "dheerajaggarwal",
         facebookId: "dheeraj.aggarwal",
         twitterId: "dheerajaggarwal",

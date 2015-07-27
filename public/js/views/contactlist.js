@@ -43,6 +43,7 @@ window.ContactListItemView = Backbone.View.extend({
             if(!obj.designation) obj.designation = 'Designation';
             if(!obj.organization) obj.organization = 'Organization Name';
             if(!obj.country) obj.country = 'Country Name';
+            if(!obj.linkedInId) obj.linkedInId = ' ';
             if(!obj.githubId) obj.githubId = ' ';
             if(!obj.facebookId) obj.facebookId = ' ';
             if(!obj.twitterId) obj.twitterId = ' ';
