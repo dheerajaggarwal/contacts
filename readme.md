@@ -4,7 +4,7 @@
 
 The application allows you to browse through a list of contacts, as well as add, update, and delete contacts.
 
-The application is also hosted online. You can test it [here].
+The application is also hosted online. You can test it [here]. Changed
 
 
 ## To run the application on your own Heroku account:##
