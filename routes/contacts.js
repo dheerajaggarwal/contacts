@@ -1,224 +1,254 @@
 var mongo = require('mongodb'),
-    _ = require('underscore');
+  _ = require('underscore');
 
 var Server = mongo.Server,
-    Db = mongo.Db,
-    BSON = mongo.BSONPure;
+  Db = mongo.Db,
+  ObjectID = mongo.ObjectID;
 
-var server = new Server('localhost', 27017, {auto_reconnect: true});
+var server = new Server('localhost', 27017, {
+  auto_reconnect: true
+});
 var dbName = process.env.DB || 'contactdb';
-db = new Db(dbName, server, {safe: true});
-
-db.open(function(err, db) {
-    if(!err) {
-        console.log("Connected to '"+dbName+"' database");
-        db.collection('contacts', {safe:true}, function(err, collection) {
-            if (err) {
-                console.log("The 'contacts' collection doesn't exist. Creating it with sample data...");
-                populateDB();
-            }
-        });
-    }
+db = new Db(dbName, server, {
+  safe: true
 });
 
-exports.rePopulateDB = function(req, res){
-    db.dropDatabase(function(err, done) {
-        if(!err){
-            populateDB(function(err, result){
-                if (err) {
-                    res.send(400, {'error': 'An error has occurred'});
-                } else {
-                    res.json(result);
-                }
-            });
+db.open(function (err, db) {
+  if (!err) {
+    console.log("Connected to '" + dbName + "' database");
+    db.listCollections({name: 'contacts'}).next(function (err, collection) {
+      if (!collection) {
+        console.log("The 'contacts' collection doesn't exist. Creating it with sample data...");
+        populateDB();
+      }
+    });
+  }
+});
+
+exports.rePopulateDB = function (req, res) {
+  db.dropDatabase(function (err, done) {
+    if (!err) {
+      populateDB(function (err, result) {
+        if (err) {
+          res.send(400, {
+            'error': 'An error has occurred'
+          });
         } else {
-            res.send(400, {'error':'An error has occurred'});
+          res.json(result);
         }
-    });
+      });
+    } else {
+      res.send(400, {
+        'error': 'An error has occurred'
+      });
+    }
+  });
 };
 
-exports.findById = function(req, res) {
-    var id = req.params.id;
-    console.log('Retrieving contact: ' + id);
-    db.collection('contacts', function(err, collection) {
-        collection.findOne({'_id': new BSON.ObjectID(id)}, function(err, item) {
-            if (err) {
-                res.send(400, {'error':'An error has occurred'});
-            } else {
-                if(item){
-                    res.json(item);    
-                } else {
-                    res.send(400, {'error':'Contact with id "' + id + '" not found.'});
-                }
-            }
+exports.findById = function (req, res) {
+  var id = req.params.id;
+  console.log('Retrieving contact: ' + id);
+  db.collection('contacts').findOne({
+    '_id': new ObjectID(id)
+  }, function (err, item) {
+    if (err) {
+      res.send(400, {
+        'error': 'An error has occurred'
+      });
+    } else {
+      if (item) {
+        res.json(item);
+      } else {
+        res.send(400, {
+          'error': 'Contact with id "' + id + '" not found.'
         });
+      }
+    }
+  });
+};
+
+exports.findAll = function (req, res) {
+  db.collection('contacts', function (err, collection) {
+    collection.find().sort({
+      'createdOn': 1
+    }).toArray(function (err, items) {
+      res.json(items);
     });
+  });
 };
 
-exports.findAll = function(req, res) {
-    db.collection('contacts', function(err, collection) {
-        collection.find().sort('createdOn').toArray(function(err, items) {
-            res.json(items);
-        });
-    });
+var isValidContact = function (contact) {
+  var errors = {},
+    lengthLimit = 35,
+    i, count, field;
+
+  var requiredFields = ['name'],
+    limitedLengthFields = ['name', 'designation', 'country', 'organization'];
+
+  for (i = 0, count = requiredFields.length; i < count; i++) {
+    if (!contact[requiredFields[i]]) {
+      errors[requiredFields[i]] = "required field";
+    }
+  }
+
+  for (i = 0, count = limitedLengthFields.length; i < count; i++) {
+    field = limitedLengthFields[i];
+    if (!errors[field] && contact[field] && contact[field].length > lengthLimit) {
+      errors[field] = "field length cannot be greater than " + lengthLimit;
+    }
+  }
+
+  if (_.isEmpty(errors)) {
+    return true;
+  }
+  return errors;
 };
 
-var isValidContact = function(contact){
-    var errors = {}, lengthLimit = 35, 
-        i, count, field;
-
-    var requiredFields = ['name'],
-        limitedLengthFields = ['name', 'designation', 'country', 'organization'];
-    
-    for(i = 0, count = requiredFields.length; i < count; i++){
-        if(!contact[requiredFields[i]]){
-            errors[requiredFields[i]] = "required field";
-        }
-    }
-
-    for(i = 0, count = limitedLengthFields.length; i < count; i++){
-        field = limitedLengthFields[i];
-        if(!errors[field] && contact[field] && contact[field].length > lengthLimit){
-            errors[field] = "field length cannot be greater than " + lengthLimit;
-        }
-    }
-
-    if(_.isEmpty(errors)){
-        return true;
-    }
-    return errors;
-};
-
-exports.addcontact = function(req, res) {
-    var contact = req.body;
-    contact.createdOn = new Date();
-    console.log('Adding contact: ' + JSON.stringify(contact));
-    db.collection('contacts', function(err, collection) {
-        var isValid = isValidContact(contact);
-        if(isValid === true){
-            collection.insert(contact, {safe:true}, function(err, result) {
-                if (err) {
-                    res.send(400, {'error':'An error has occurred'});
-                } else {
-                    console.log('Success: ' + JSON.stringify(result[0]));
-                    res.send(result[0]);
-                }
-            });
+exports.addcontact = function (req, res) {
+  var contact = req.body;
+  contact.createdOn = new Date();
+  console.log('Adding contact: ' + JSON.stringify(contact));
+  db.collection('contacts', function (err, collection) {
+    var isValid = isValidContact(contact);
+    if (isValid === true) {
+      collection.insert(contact, {
+        safe: true
+      }, function (err, result) {
+        if (err) {
+          res.send(400, {
+            'error': 'An error has occurred'
+          });
         } else {
-            res.send(400, {errors: isValid});
+          console.log('Success: ' + JSON.stringify(result[0]));
+          res.send(result[0]);
         }
-    });
+      });
+    } else {
+      res.send(400, {
+        errors: isValid
+      });
+    }
+  });
 }
 
-exports.updatecontact = function(req, res) {
-    var id = req.params.id;
-    var contact = req.body;
-    delete contact._id;
-    console.log('Updating contact: ' + id);
-    console.log(JSON.stringify(contact));
-    db.collection('contacts', function(err, collection) {
-        var isValid = isValidContact(contact);
-        if(isValid === true){
-            collection.update({'_id': new BSON.ObjectID(id)}, contact, {safe:true}, function(err, result) {
-                if (err) {
-                    console.log('Error updating contact: ' + err);
-                    res.send(400, {'error': 'An error has occurred'});
-                } else {
-                    if(result){
-                        console.log('' + result + ' document(s) updated');
-                        res.send(contact);    
-                    } else {
-                        res.send(400, {'error': 'Contact with id "' + id + '" not found.'});
-                    }
-                }
-            });    
+exports.updatecontact = function (req, res) {
+  var id = req.params.id;
+  var contact = req.body;
+  delete contact._id;
+  console.log('Updating contact: ' + id);
+  console.log(JSON.stringify(contact));
+  db.collection('contacts', function (err, collection) {
+    var isValid = isValidContact(contact);
+    if (isValid === true) {
+      collection.update({
+        '_id': new ObjectID(id)
+      }, contact, {
+        safe: true
+      }, function (err, result) {
+        if (err) {
+          console.log('Error updating contact: ' + err);
+          res.send(400, {
+            'error': 'An error has occurred'
+          });
         } else {
-            res.send(400, {errors: isValid});
+          if (result) {
+            console.log('' + result + ' document(s) updated');
+            res.send(contact);
+          } else {
+            res.send(400, {
+              'error': 'Contact with id "' + id + '" not found.'
+            });
+          }
         }
-    });
+      });
+    } else {
+      res.send(400, {
+        errors: isValid
+      });
+    }
+  });
 }
 
-exports.deletecontact = function(req, res) {
-    var id = req.params.id;
-    console.log('Deleting contact: ' + id);
-    db.collection('contacts', function(err, collection) {
-        collection.remove({'_id': new BSON.ObjectID(id)}, {safe:true}, function(err, result) {
-            if (err) {
-                res.send(400, {'error': 'An error has occurred - ' + err});
-            } else {
-                if(result){
-                    console.log('' + result + ' document(s) deleted');
-                    res.send(req.body);
-                } else {
-                    res.send(400, {'error': 'Contact with id "' + id + '" not found.'});
-                }
-            }
+exports.deletecontact = function (req, res) {
+  var id = req.params.id;
+  console.log('Deleting contact: ' + id);
+  db.collection('contacts', function (err, collection) {
+    collection.remove({
+      '_id': new ObjectID(id)
+    }, {
+      safe: true
+    }, function (err, result) {
+      if (err) {
+        res.send(400, {
+          'error': 'An error has occurred - ' + err
         });
+      } else {
+        if (result) {
+          console.log('' + result + ' document(s) deleted');
+          res.send(req.body);
+        } else {
+          res.send(400, {
+            'error': 'Contact with id "' + id + '" not found.'
+          });
+        }
+      }
     });
+  });
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Populate database with sample data -- Only used once: the first time the application is started.
 // You'd typically not find this code in a real-life app, since the database would already exist.
-var populateDB = function(next) {
+var populateDB = function (next) {
 
-    var contacts = [
-    {
-        name: "Dheeraj Kumar Aggarwal",
-        email: "dheeraj.aggarwal@optimizory.com",
-        designation: "Sr. Software Engineer",
-        organization: "Optimizory Technologies Pvt. Ltd.",
-        country: "India",
-        aboutMe: "Passionate to learn and innovate new ideas and do every piece of work with a degree of excellence and try best to bring ideas into life.",
-        linkedInId: "aggarwaldheeraj",
-        githubId: "dheerajaggarwal",
-        facebookId: "dheeraj.aggarwal",
-        twitterId: "dheerajaggarwal",
-        createdOn: new Date()
+  var contacts = [{
+      name: "Dheeraj Kumar Aggarwal",
+      email: "dheeraj.aggarwal@optimizory.com",
+      designation: "Engineering Manager",
+      organization: "Optimizory Technologies Pvt. Ltd.",
+      country: "India",
+      aboutMe: "Passionate to learn and innovate new ideas and do every piece of work with a degree of excellence and try best to bring ideas into life. My hobbies are Yoga and Kalaripayattu. I am currently working on vREST NG (https://ng.vrest.io).",
+      linkedInId: "aggarwaldheeraj",
+      githubId: "dheerajaggarwal",
+      facebookId: "dheeraj.aggarwal",
+      twitterId: "dheerajaggarwal",
+      createdOn: new Date()
     },
     {
-        name: "Ramesh Kumar",
-        email: "ramesh.kumar@optimizory.com",
-        designation: "Software Engineer",
-        organization: "Optimizory Technologies Pvt. Ltd.",
-        country: "India",
-        aboutMe: "About me Section ...",
-        githubId: "",
-        facebookId: "goods.ramesh",
-        twitterId: "",
-        createdOn: new Date()
+      name: "Deepanshu Natani",
+      email: "deepanshu.natani@optimizory.com",
+      designation: "Software Engineer",
+      organization: "Optimizory Technologies Pvt. Ltd.",
+      country: "India",
+      aboutMe: "About me Section ...",
+      githubId: "",
+      facebookId: "deepanshu.natani",
+      twitterId: "deepanshunatani",
+      createdOn: new Date()
     },
     {
-        name: "Deepanshu Natani",
-        email: "deepanshu.natani@optimizory.com",
-        designation: "Software Engineer",
-        organization: "Optimizory Technologies Pvt. Ltd.",
-        country: "India",
-        aboutMe: "About me Section ...",
-        githubId: "",
-        facebookId: "deepanshu.natani",
-        twitterId: "deepanshunatani",
-        createdOn: new Date()
-    },
-    {
-        name: "Deepak Jangid",
-        email: "deepak.jangid@optimizory.com",
-        designation: "Sr. Software Engineer",
-        organization: "Optimizory Technologies Pvt. Ltd.",
-        country: "India",
-        aboutMe: "About me Section ...",
-        githubId: "",
-        facebookId: "",
-        twitterId: "",
-        createdOn: new Date()
-    }];
+      name: "Deepak Jangid",
+      email: "deepak.jangid@optimizory.com",
+      designation: "Sr. Software Engineer",
+      organization: "Optimizory Technologies Pvt. Ltd.",
+      country: "India",
+      aboutMe: "About me Section ...",
+      githubId: "",
+      facebookId: "",
+      twitterId: "",
+      createdOn: new Date()
+    }
+  ];
 
-    db.collection('contacts', function(err, collection) {
-        collection.insert(contacts, {safe:true}, function(err, result) {
-            if(next){
-                next(err, result);
-            }
-        });
+  db.collection('contacts', function (err, collection) {
+    collection.insert(contacts, {
+      safe: true
+    }, function (err, result) {
+      if(!err) console.log("Sample data inserted.");
+      if (next) {
+        next(err, result);
+      }
     });
+  });
 
 };
