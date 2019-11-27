@@ -1,0 +1,159 @@
+swagger: "2.0"
+info:
+  description: 'This is a sample test application to demonstrate vREST NG and vREST Cloud.'
+  version: "1.0.0"
+  title: "vREST Contacts Application"
+  contact:
+    email: "dheeraj.aggarwal@optimizory.com"
+host: "example.vrest.io"
+basePath: "/contacts/v1/test"
+tags:
+- name: "CRUD APIs"
+  description: "CRUD APIs"
+schemes:
+- "http"
+paths:
+  /contacts:
+    get:
+      tags:
+      - "CRUD APIs"
+      summary: "List of Contacts"
+      description: ""
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Invalid input"
+          schema: 
+            $ref: "#/definitions/ContactList"
+    post:
+      tags:
+      - "CRUD APIs"
+      summary: "Create a new contact"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Contact object that needs to be added"
+        required: true
+        schema:
+          $ref: "#/definitions/ContactWithoutId"
+      responses:
+        400:
+          description: "Invalid Input"
+          schema:
+            $ref: '#/definitions/Error'
+        200:
+          description: "Success Response"
+          schema: 
+            $ref: "#/definitions/Contact"
+  /contacts/{contactId}:
+    get:
+      tags:
+      - "CRUD APIs"
+      summary: "Find contact by id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Contact"
+        400:
+          description: "Invalid Input"
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+      - "CRUD APIs"
+      summary: "Update contact by id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to update"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Contact object that needs to be updated"
+        required: true
+        schema:
+          $ref: '#/definitions/ContactWithoutId'
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Contact"
+        400:
+          description: "Invalid Input"
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      tags:
+      - "CRUD APIs"
+      summary: "Delete contact by id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contactId"
+        in: "path"
+        description: "ID of contact to delete"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid Input"
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  ContactWithoutId:
+    type: "object"
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      designation:
+        type: string
+      organization:
+        type: string
+      country:
+        type: string
+      aboutMe:
+        type: string
+      twitterId:
+        type: string
+      facebookId:
+        type: string
+      githubId:
+        type: string
+  Contact:
+    allOf:
+      - $ref: '#/definitions/ContactWithoutId'
+      - type: object
+        properties:
+          _id:
+            type: "string"
+  ContactList:
+    type: "array"
+    items:
+      $ref: "#/definitions/Contact"
+  Error:
+    type: object
+    properties:
+      errors:
+        type: object
