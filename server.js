@@ -17,6 +17,8 @@ app.locals = {
   instanceType: instanceType
 };
 
+app.disable('etag');
+
 app.configure(function () {
   app.set('port', process.env.PORT || 3000);
   app.use(express.logger('dev')); /* 'default', 'short', 'tiny', 'dev' */

@@ -5,43 +5,57 @@ info:
   title: "vREST Contacts Application"
   contact:
     email: "dheeraj.aggarwal@optimizory.com"
-host: "example.vrest.io"
-basePath: "/contacts/v1/test"
 tags:
 - name: "CRUD APIs"
   description: "CRUD APIs"
-schemes:
-- "http"
 paths:
   /contacts:
-    get:
-      tags:
-      - "CRUD APIs"
-      summary: "List of Contacts"
-      description: ""
-      produces:
-      - "application/json"
-      responses:
-        200:
-          description: "Invalid input"
-          schema: 
-            $ref: "#/definitions/ContactList"
     post:
       tags:
       - "CRUD APIs"
       summary: "Create a new contact"
       description: ""
       consumes:
-      - "application/json"
+      - "application/x-www-form-urlencoded"
       produces:
       - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Contact object that needs to be added"
-        required: true
-        schema:
-          $ref: "#/definitions/ContactWithoutId"
+      - in: "formData"
+        type: "string"
+        name: "name"
+        description: "Contact Name"
+      - in: "formData"
+        type: "string"
+        name: "email"
+        description: "Contact Email"
+      - in: "formData"
+        type: "string"
+        name: "designation"
+        description: "Contact Designation"
+      - in: "formData"
+        type: "string"
+        name: "organization"
+        description: "Organization Information"
+      - in: "formData"
+        type: "string"
+        name: "country"
+        description: "Country Information"
+      - in: "formData"
+        type: "string"
+        name: "aboutMe"
+        description: "AboutMe Information"
+      - in: "formData"
+        type: "string"
+        name: "twitterId"
+        description: "Twitter Id Information"
+      - in: "formData"
+        type: "string"
+        name: "facebookId"
+        description: "Facebook Id Information"
+      - in: "formData"
+        type: "string"
+        name: "githubId"
+        description: "Github Id Information"
       responses:
         400:
           description: "Invalid Input"
@@ -77,6 +91,8 @@ paths:
       tags:
       - "CRUD APIs"
       summary: "Update contact by id"
+      consumes:
+      - "application/x-www-form-urlencoded"
       produces:
       - "application/json"
       parameters:
@@ -85,12 +101,42 @@ paths:
         description: "ID of contact to update"
         required: true
         type: "string"
-      - in: "body"
-        name: "body"
-        description: "Contact object that needs to be updated"
-        required: true
-        schema:
-          $ref: '#/definitions/ContactWithoutId'
+      - in: "formData"
+        type: "string"
+        name: "name"
+        description: "Contact Name"
+      - in: "formData"
+        type: "string"
+        name: "email"
+        description: "Contact Email"
+      - in: "formData"
+        type: "string"
+        name: "designation"
+        description: "Contact Designation"
+      - in: "formData"
+        type: "string"
+        name: "organization"
+        description: "Organization Information"
+      - in: "formData"
+        type: "string"
+        name: "country"
+        description: "Country Information"
+      - in: "formData"
+        type: "string"
+        name: "aboutMe"
+        description: "AboutMe Information"
+      - in: "formData"
+        type: "string"
+        name: "twitterId"
+        description: "Twitter Id Information"
+      - in: "formData"
+        type: "string"
+        name: "facebookId"
+        description: "Facebook Id Information"
+      - in: "formData"
+        type: "string"
+        name: "githubId"
+        description: "Github Id Information"
       responses:
         200:
           description: "successful operation"
@@ -157,3 +203,8 @@ definitions:
     properties:
       errors:
         type: object
+  GenericError:
+    type: object
+    properties:
+      error:
+        type: "string"

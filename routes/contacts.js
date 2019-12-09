@@ -119,8 +119,8 @@ exports.addcontact = function (req, res) {
             'error': 'An error has occurred'
           });
         } else {
-          console.log('Success: ' + JSON.stringify(result[0]));
-          res.send(result[0]);
+          console.log('Success: ' + JSON.stringify(result.ops[0]));
+          res.send(result.ops[0]);
         }
       });
     } else {
@@ -136,22 +136,19 @@ exports.updatecontact = function (req, res) {
   var contact = req.body;
   delete contact._id;
   console.log('Updating contact: ' + id);
-  console.log(JSON.stringify(contact));
   db.collection('contacts', function (err, collection) {
     var isValid = isValidContact(contact);
     if (isValid === true) {
       collection.update({
         '_id': new ObjectID(id)
-      }, contact, {
-        safe: true
-      }, function (err, result) {
+      }, contact, function (err, result) {
         if (err) {
           console.log('Error updating contact: ' + err);
           res.send(400, {
             'error': 'An error has occurred'
           });
         } else {
-          if (result) {
+          if (result && result.result && result.result.n) {
             console.log('' + result + ' document(s) updated');
             res.send(contact);
           } else {
@@ -175,15 +172,13 @@ exports.deletecontact = function (req, res) {
   db.collection('contacts', function (err, collection) {
     collection.remove({
       '_id': new ObjectID(id)
-    }, {
-      safe: true
     }, function (err, result) {
       if (err) {
         res.send(400, {
           'error': 'An error has occurred - ' + err
         });
       } else {
-        if (result) {
+        if (result && result.result && result.result.n) {
           console.log('' + result + ' document(s) deleted');
           res.send(req.body);
         } else {
@@ -202,40 +197,40 @@ exports.deletecontact = function (req, res) {
 var populateDB = function (next) {
 
   var contacts = [{
-      name: "Dheeraj Kumar Aggarwal",
-      email: "dheeraj.aggarwal@optimizory.com",
-      designation: "Engineering Manager",
-      organization: "Optimizory Technologies Pvt. Ltd.",
+      name: "Lindsey Okelley",
+      email: "lindsey.okelley@example.com",
+      designation: "Product Evangelist",
+      organization: "Example.com",
       country: "India",
-      aboutMe: "Passionate to learn and innovate new ideas and do every piece of work with a degree of excellence and try best to bring ideas into life. My hobbies are Yoga and Kalaripayattu. I am currently working on vREST NG (https://ng.vrest.io).",
-      linkedInId: "aggarwaldheeraj",
-      githubId: "dheerajaggarwal",
-      facebookId: "dheeraj.aggarwal",
-      twitterId: "dheerajaggarwal",
+      aboutMe: "This is about me section ...",
+      linkedInId: "lindsey.okelley",
+      githubId: "lindsey.okelley",
+      facebookId: "lindsey.okelley",
+      twitterId: "lindsey.okelley",
       createdOn: new Date()
     },
     {
-      name: "Deepanshu Natani",
-      email: "deepanshu.natani@optimizory.com",
+      name: "Lorette Cuffie",
+      email: "lorette.cuffie@example.com",
       designation: "Software Engineer",
-      organization: "Optimizory Technologies Pvt. Ltd.",
-      country: "India",
-      aboutMe: "About me Section ...",
+      organization: "Example.com",
+      country: "US",
+      aboutMe: "This is about me section ...",
       githubId: "",
-      facebookId: "deepanshu.natani",
-      twitterId: "deepanshunatani",
+      facebookId: "lorette.cuffie",
+      twitterId: "lorette.cuffie",
       createdOn: new Date()
     },
     {
-      name: "Deepak Jangid",
-      email: "deepak.jangid@optimizory.com",
+      name: "Nila Ready",
+      email: "nila.ready@example.com",
       designation: "Sr. Software Engineer",
-      organization: "Optimizory Technologies Pvt. Ltd.",
+      organization: "Example.com",
       country: "India",
       aboutMe: "About me Section ...",
-      githubId: "",
+      githubId: "nila.ready",
       facebookId: "",
-      twitterId: "",
+      twitterId: "nila.ready",
       createdOn: new Date()
     }
   ];
